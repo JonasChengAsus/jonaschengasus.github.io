@@ -1,3 +1,8 @@
+This demo code is implemented for sandbox [Epic on FHIR](https://fhir.epic.com/Documentation?docId=launching#)
+* Account: jonascheng
+  registered with jonas_cheng@asus.com
+* PWD: 9qZ8Ufx6NB8Tu@8
+
 When a developer registers an app, the website creates an app record in the Epic database and assigns the app production and non-production client IDs. The steps for a user to register an app are:
 
 1. Navigate to the Build Apps page
