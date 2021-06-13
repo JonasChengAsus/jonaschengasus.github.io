@@ -19,14 +19,14 @@
 <body>
 
   <div id="main">
-    <h2>All Patient IDs</h2>
+    <h2>All Conditions IDs</h2>
     <table>
-      <tbody id="patient-id-table"></tbody>
-    </table>
+      <tr>
+        <th>Condition ID</th>
+        <th>Patient ID</th>
+      </tr>
 
-    <h2>All Condition IDs</h2>
-    <table>
-      <tbody id="condition-id-table"></tbody>
+      <tbody id="patient-id-table"></tbody>
     </table>
 
   </div>
@@ -53,10 +53,13 @@
         onPage(bundle) {
           console.log(bundle.entry);
           console.log(bundle.entry.length);
-          $("#patient-id-table").append("<tr> \
+          bundle.entry.forEach(function (condition) {
+            console.log(condition.resource.id);
+            $("#patient-id-table").append("<tr> \
             <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
-            <td><div class='condition-id'>" + patient.resource.id + "</div></td> \
+            <td><div class='condition-id'>" + condition.resource.id + "</div></td> \
             </tr>");
+          });
         },
       });
 
