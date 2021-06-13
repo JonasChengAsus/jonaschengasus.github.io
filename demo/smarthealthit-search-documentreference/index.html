@@ -55,7 +55,8 @@
     async function doRequests() {
 
       var query = new URLSearchParams();
-      query.set("gender", "male");
+      var genders = ['male', 'female'];
+      query.set("gender", genders.join(","));
       var patientRef = await myApp.smart.request(
         "Patient?" + query, {
         pageLimit: 0,   // get all pages
@@ -63,9 +64,11 @@
       console.log(patientRef[0].entry);
       console.log(patientRef[0].entry.length);
 
-      patientRef[0].entry.forEach(function (p) {
-        console.log(p.resource.id);
-        $("#patient-id-table").append("<tr><td><div class='patient-id'>" + p.resource.id + "</div></td></tr>");
+      patientRef.forEach(function (page) {
+        page.entry.forEach(function (p) {
+          console.log(p.resource.id);
+          $("#patient-id-table").append("<tr><td><div class='patient-id'>" + p.resource.id + "</div></td></tr>");
+        });
       });
 
       // // obtains patient information
