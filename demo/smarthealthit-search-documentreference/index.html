@@ -51,15 +51,15 @@
       var query = new URLSearchParams();
       var genders = ['male', 'female'];
       query.set("gender", genders.join(","));
-      var patientRef = await myApp.smart.request(
+      // search all patients
+      await myApp.smart.request(
         "Patient?" + query, {
         pageLimit: 0,   // get all pages
-      });
-      console.log(patientRef[0].entry);
-      console.log(patientRef[0].entry.length);
-
-      patientRef.forEach(function (page) {
-        page.entry.forEach(searchCondition(patient));
+        onPage(bundle) {
+          console.log(bundle.entry);
+          console.log(bundle.entry.length);
+          bundle.entry.forEach(searchCondition);
+        },
       });
 
     }
