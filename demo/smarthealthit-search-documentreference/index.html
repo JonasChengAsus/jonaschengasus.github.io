@@ -43,7 +43,22 @@
 
     async function searchCondition(patient) {
       console.log(patient.resource.id);
-      $("#patient-id-table").append("<tr><td><div class='patient-id'>" + patient.resource.id + "</div></td></tr>");
+
+      var query = new URLSearchParams();
+      query.set("subject", patient.resource.id);
+      // search all patients
+      await myApp.smart.request(
+        "Condition?" + query, {
+        pageLimit: 0,   // get all pages
+        onPage(bundle) {
+          console.log(bundle.entry);
+          console.log(bundle.entry.length);
+          $("#patient-id-table").append("<tr> \
+            <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+            </tr>");
+        },
+      });
+
     }
 
     async function searchPatient() {
