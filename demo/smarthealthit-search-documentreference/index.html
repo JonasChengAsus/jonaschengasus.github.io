@@ -26,7 +26,7 @@
         <th>Patient ID</th>
       </tr>
 
-      <tbody id="patient-id-table"></tbody>
+      <tbody id="condition-id-table"></tbody>
     </table>
 
   </div>
@@ -55,7 +55,7 @@
           console.log(bundle.entry.length);
           bundle.entry.forEach(function (condition) {
             console.log(condition.resource.id);
-            $("#patient-id-table").append("<tr> \
+            $("#condition-id-table").append("<tr> \
             <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
             <td><div class='condition-id'>" + condition.resource.id + "</div></td> \
             </tr>");
