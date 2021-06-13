@@ -19,9 +19,10 @@
 <body>
 
   <div id="main">
-    <h2>Resource ID</h2>
+    <h2>All Patient IDs</h2>
     <table>
-      <tr>
+      <tbody id="patient-id-table"></tbody>
+      <!-- <tr>
         <th>Patient:</th>
         <td id='patient-id'></td>
       </tr>
@@ -36,7 +37,7 @@
       <tr>
         <th>Procedure:</th>
         <td id='procedure-id'>no available</td>
-      </tr>
+      </tr> -->
     </table>
 
   </div>
@@ -64,6 +65,7 @@
 
       patientRef[0].entry.forEach(function (p) {
         console.log(p.resource.id);
+        $("#patient-id-table").append("<tr><td><div class='patient-id'>" + p.resource.id + "</div></td></tr>");
       });
 
       // // obtains patient information
