@@ -51,15 +51,17 @@
         "Condition?" + query, {
         pageLimit: 0,   // get all pages
         onPage(bundle) {
-          console.log(bundle.entry);
-          console.log(bundle.entry.length);
-          bundle.entry.forEach(function (condition) {
-            console.log(condition.resource.id);
-            $("#condition-id-table").append("<tr> \
-            <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
-            <td><div class='condition-id'>" + condition.resource.id + "</div></td> \
-            </tr>");
-          });
+          if (bundle.entry != undefined) {
+            console.log(bundle.entry);
+            console.log(bundle.entry.length);
+            bundle.entry.forEach(function (condition) {
+              console.log(condition.resource.id);
+              $("#condition-id-table").append("<tr> \
+              <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              <td><div class='condition-id'>" + condition.resource.id + "</div></td> \
+              </tr>");
+            });
+          }
         },
       });
 
