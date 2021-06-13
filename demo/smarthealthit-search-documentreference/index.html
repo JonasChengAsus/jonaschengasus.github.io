@@ -19,6 +19,16 @@
 <body>
 
   <div id="main">
+    <h2>All Procedure IDs</h2>
+    <table>
+      <tr>
+        <th>Procedure ID</th>
+        <th>Patient ID</th>
+      </tr>
+
+      <tbody id="procedure-id-table"></tbody>
+    </table>
+
     <h2>All Conditions IDs</h2>
     <table>
       <tr>
@@ -64,7 +74,31 @@
           }
         },
       });
+    }
 
+    async function searchProcedure(patient) {
+      console.log(patient.resource.id);
+
+      var query = new URLSearchParams();
+      query.set("subject", patient.resource.id);
+      // search all patients
+      await myApp.smart.request(
+        "Procedure?" + query, {
+        pageLimit: 0,   // get all pages
+        onPage(bundle) {
+          if (bundle.entry != undefined) {
+            console.log(bundle.entry);
+            console.log(bundle.entry.length);
+            bundle.entry.forEach(function (procedure) {
+              console.log(procedure.resource.id);
+              $("#procedure-id-table").append("<tr> \
+              <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              <td><div class='procedure-id'>" + procedure.resource.id + "</div></td> \
+              </tr>");
+            });
+          }
+        },
+      });
     }
 
     async function searchPatient() {
@@ -79,7 +113,10 @@
         onPage(bundle) {
           console.log(bundle.entry);
           console.log(bundle.entry.length);
-          bundle.entry.forEach(searchCondition);
+          bundle.entry.forEach(function (patient) {
+            searchProcedure(patient);
+            searchCondition(patient);
+          });
         },
       });
 
