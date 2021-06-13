@@ -22,22 +22,11 @@
     <h2>All Patient IDs</h2>
     <table>
       <tbody id="patient-id-table"></tbody>
-      <!-- <tr>
-        <th>Patient:</th>
-        <td id='patient-id'></td>
-      </tr>
-      <tr>
-        <th>Encounter:</th>
-        <td id='encounter-id'>no available</td>
-      </tr>
-      <tr>
-        <th>Condition:</th>
-        <td id='condition-id'>no available</td>
-      </tr>
-      <tr>
-        <th>Procedure:</th>
-        <td id='procedure-id'>no available</td>
-      </tr> -->
+    </table>
+
+    <h2>All Condition IDs</h2>
+    <table>
+      <tbody id="condition-id-table"></tbody>
     </table>
 
   </div>
@@ -49,10 +38,15 @@
     FHIR.oauth2.ready()
       .then(function (client) {
         myApp.smart = client
-        doRequests()
+        searchPatient()
       })
 
-    async function doRequests() {
+    async function searchCondition(patient) {
+      console.log(patient.resource.id);
+      $("#patient-id-table").append("<tr><td><div class='patient-id'>" + patient.resource.id + "</div></td></tr>");
+    }
+
+    async function searchPatient() {
 
       var query = new URLSearchParams();
       var genders = ['male', 'female'];
@@ -65,81 +59,8 @@
       console.log(patientRef[0].entry.length);
 
       patientRef.forEach(function (page) {
-        page.entry.forEach(function (p) {
-          console.log(p.resource.id);
-          $("#patient-id-table").append("<tr><td><div class='patient-id'>" + p.resource.id + "</div></td></tr>");
-        });
+        page.entry.forEach(searchCondition(patient));
       });
-
-      // // obtains patient information
-      // var patient = await myApp.smart.patient.read();
-      // console.log(patient);
-
-      // // obtains encounter information
-      // var encounter = await myApp.smart.encounter.read();
-      // console.log(encounter);
-
-      // // resource id
-      // var patientId = myApp.smart.getPatientId();
-      // var encounterId = myApp.smart.getEncounterId();
-      // $('#patient-id').html(patientId);
-      // $('#encounter-id').html(encounterId);
-
-      // // patient information
-      // var gender = patient.gender;
-      // var birthdate = patient.birthDate;
-      // var fname = '';
-      // var lname = '';
-      // if (typeof patient.name[1] !== 'undefined') {
-      //   fname = patient.name[1].given.join(' ');
-      //   lname = patient.name[1].family;
-      // }
-
-      // $('#fname').html(fname);
-      // $('#lname').html(lname);
-      // $('#gender').html(gender);
-      // $('#birthdate').html(birthdate);
-
-      // // encounter information
-      // var periodStart = encounter.period.start;
-      // var periodEnd = encounter.period.end;
-      // var status = encounter.status;
-      // var type = encounter.type[0].text;
-
-      // $('#period-start').html(periodStart);
-      // $('#period-end').html(periodEnd);
-      // $('#status').html(status);
-      // $('#type').html(type);
-
-      // // search related condition
-      // var query = new URLSearchParams();
-      // query.set("encounter", encounterId);
-      // var conditionRef = await myApp.smart.patient.request(
-      //   "Condition?" + query, {
-      //   pageLimit: 0,   // get all pages
-      // });
-      // console.log(conditionRef[0].entry);
-
-      // if (conditionRef[0].entry != undefined) {
-      //   condition = conditionRef[0].entry[0].resource;
-      //   conditionId = condition.id;
-      //   $('#condition-id').html(conditionId);
-      // }
-
-      // // search related procedure
-      // var query = new URLSearchParams();
-      // query.set("encounter", encounterId);
-      // var procedureRef = await myApp.smart.patient.request(
-      //   "Procedure?" + query, {
-      //   pageLimit: 0,   // get all pages
-      // });
-      // console.log(procedureRef[0].entry);
-
-      // if (procedureRef[0].entry != undefined) {
-      //   procedure = procedureRef[0].entry[0].resource;
-      //   procedureId = procedure.id;
-      //   $('#procedure-id').html(procedureId);
-      // }
 
     }
   </script>
