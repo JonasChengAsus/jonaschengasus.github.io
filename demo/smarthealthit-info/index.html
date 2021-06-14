@@ -13,12 +13,60 @@
       padding: 1em;
       font-size: 2em;
     }
+
+    .token {
+      width: 400px;
+      padding: 10px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   </style>
 </head>
 
 <body>
 
   <div id="main">
+    <h2>FHIR</h2>
+    <table>
+      <tr>
+        <th>FHIR Version:</th>
+        <td id='fhir-version'></td>
+      </tr>
+      <tr>
+        <th>FHIR Release:</th>
+        <td id='fhir-release'></td>
+      </tr>
+      <tr>
+        <th>Auth URI:</th>
+        <td id='authorize-uri'></td>
+      </tr>
+      <tr>
+        <th>Server URI:</th>
+        <td id='server-uri'></td>
+      </tr>
+      <tr>
+        <th>Client ID:</th>
+        <td id='client-id'></td>
+      </tr>
+      <tr>
+        <th>Scope:</th>
+        <td id='scope'></td>
+      </tr>
+      <tr>
+        <th>User ID:</th>
+        <td id='user-id'></td>
+      </tr>
+      <tr>
+        <th>User Type:</th>
+        <td id='user-type'></td>
+      </tr>
+      <tr>
+        <th>Access Token:</th>
+        <td id='access-token' class="token"></td>
+      </tr>
+    </table>
+
     <h2>Resource ID</h2>
     <table>
       <tr>
@@ -104,6 +152,27 @@
       // obtains encounter information
       var encounter = await myApp.smart.encounter.read();
       console.log(encounter);
+
+      // fhir information
+      var fhirVersion = await myApp.smart.getFhirVersion();
+      var fhirRelease = await myApp.smart.getFhirRelease();
+      var authUri = myApp.smart.state.authorizeUri;
+      var serverUri = myApp.smart.state.serverUrl;
+      var clientId = myApp.smart.state.clientId;
+      var scope = myApp.smart.state.scope;
+      var accessToken = myApp.smart.state.tokenResponse.access_token;
+      var userId = myApp.smart.getUserId();
+      var userType = myApp.smart.getUserType();
+
+      $('#fhir-version').html(fhirVersion);
+      $('#fhir-release').html(fhirRelease);
+      $('#authorize-uri').html(authUri);
+      $('#server-uri').html(serverUri);
+      $('#client-id').html(clientId);
+      $('#scope').html(scope);
+      $('#user-id').html(userId);
+      $('#user-type').html(userType);
+      $('#access-token').html(accessToken);
 
       // resource id
       var patientId = myApp.smart.getPatientId();
