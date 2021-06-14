@@ -3,90 +3,99 @@
 
 <head>
 
-	<script src='dist/fhir-client-v2.js'></script>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src='dist/fhir-client-v2.js'></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
   <style>
-    #main{background:lightgray; margin:1em; padding:1em;font-size:2em;}
+    #main {
+      background: lightgray;
+      margin: 1em;
+      padding: 1em;
+      font-size: 2em;
+    }
   </style>
 </head>
 
 <body>
 
   <div id="main">
-      <h2>Resource ID</h2>
-      <table>
-        <tr>
-          <th>Patient:</th>
-          <td id='patient-id'></td>
-        </tr>
-        <tr>
-          <th>Encounter:</th>
-          <td id='encounter-id'>no available</td>
-        </tr>
-        <tr>
-          <th>Condition:</th>
-          <td id='condition-id'>no available</td>
-        </tr>
-        <tr>
-          <th>Procedure:</th>
-          <td id='procedure-id'>no available</td>
-        </tr>
-      </table>
+    <h2>Resource ID</h2>
+    <table>
+      <tr>
+        <th>Patient:</th>
+        <td id='patient-id'></td>
+      </tr>
+      <tr>
+        <th>Encounter:</th>
+        <td id='encounter-id'>no available</td>
+      </tr>
+      <tr>
+        <th>Condition:</th>
+        <td id='condition-id'>no available</td>
+      </tr>
+      <tr>
+        <th>Procedure:</th>
+        <td id='procedure-id'>no available</td>
+      </tr>
+      <tr>
+        <th>DocumentReference:</th>
+        <td id='document-reference-id'>no available</td>
+      </tr>
+    </table>
 
-      <h2>Patient Information</h2>
-      <table>
-        <tr>
-          <th>First Name:</th>
-          <td id='fname'></td>
-        </tr>
-        <tr>
-          <th>Last Name:</th>
-          <td id='lname'></td>
-        </tr>
-        <tr>
-          <th>Gender:</th>
-          <td id='gender'></td>
-        </tr>
-        <tr>
-          <th>Date of Birth:</th>
-          <td id='birthdate'></td>
-        </tr>
-      </table>
+    <h2>Patient Information</h2>
+    <table>
+      <tr>
+        <th>First Name:</th>
+        <td id='fname'>no available</td>
+      </tr>
+      <tr>
+        <th>Last Name:</th>
+        <td id='lname'>no available</td>
+      </tr>
+      <tr>
+        <th>Gender:</th>
+        <td id='gender'>no available</td>
+      </tr>
+      <tr>
+        <th>Date of Birth:</th>
+        <td id='birthdate'>no available</td>
+      </tr>
+    </table>
 
-      <h2>Encounter Information</h2>
-      <table>
-        <tr>
-          <th>Start:</th>
-          <td id='period-start'></td>
-        </tr>
-        <tr>
-          <th>End:</th>
-          <td id='period-end'></td>
-        </tr>
-        <tr>
-          <th>Status:</th>
-          <td id='status'></td>
-        </tr>
-        <tr>
-          <th>Type:</th>
-          <td id='type'></td>
-        </tr>
-      </table>
+    <h2>Encounter Information</h2>
+    <table>
+      <tr>
+        <th>Start:</th>
+        <td id='period-start'>no available</td>
+      </tr>
+      <tr>
+        <th>End:</th>
+        <td id='period-end'>no available</td>
+      </tr>
+      <tr>
+        <th>Status:</th>
+        <td id='status'>no available</td>
+      </tr>
+      <tr>
+        <th>Type:</th>
+        <td id='type'>no available</td>
+      </tr>
+    </table>
 
   </div>
 
-	<script>
+  <script>
 
-		var myApp = {}
+    var myApp = {}
 
     FHIR.oauth2.ready()
-    .then(function(client){
-      myApp.smart = client
-      doRequests()
-    })
+      .then(function (client) {
+        myApp.smart = client
+        doRequests()
+      })
 
-    async function doRequests(){
+    async function doRequests() {
 
       // obtains patient information
       var patient = await myApp.smart.patient.read();
@@ -158,8 +167,23 @@
         $('#procedure-id').html(procedureId);
       }
 
+      // search related documentreference
+      var query = new URLSearchParams();
+      query.set("encounter", encounterId);
+      var drRef = await myApp.smart.patient.request(
+        "DocumentReference?" + query, {
+        pageLimit: 0,   // get all pages
+      });
+      console.log(drRef[0].entry);
+
+      if (drRef[0].entry != undefined) {
+        documentReference = drRef[0].entry[0].resource;
+        documentReferenceId = documentReference.id;
+        $('#document-reference-id').html(documentReferenceId);
+      }
+
     }
-	</script>
+  </script>
 
 </body>
 

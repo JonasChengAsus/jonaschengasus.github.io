@@ -2,4 +2,11 @@ This demo code is implemented base upon sandbox [smarthealthit](https://launch.s
 
 You may follow the instructions on the web site, and specify *App Launch URL* to test out.
 
-The app retrieves basic information from a single patient.
+The app retrieves basic information from a single patient as follows.
+* Patient ID
+  * patient information
+* Encounter ID
+  * encounter information
+* Condition ID if any
+* Procedure ID if any
+* DocumentReference ID if any
