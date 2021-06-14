@@ -44,7 +44,7 @@
 
   <div id="main">
     <h2>All DocumentReference IDs</h2>
-    <button type="button" class="collapsible">DocumentReferences</button>
+    <button type="button" class="collapsible">Collapsible DocumentReferences</button>
     <div class="content">
       <table>
         <tr>
@@ -57,7 +57,7 @@
     </div>
 
     <h2>All Procedure IDs</h2>
-    <button type="button" class="collapsible">Procedures</button>
+    <button type="button" class="collapsible">Collapsible Procedures</button>
     <div class="content">
       <table>
         <tr>
@@ -70,7 +70,7 @@
     </div>
 
     <h2>All Condition IDs</h2>
-    <button type="button" class="collapsible">Conditions</button>
+    <button type="button" class="collapsible">Collapsible Conditions</button>
     <div class="content">
       <table>
         <tr>
@@ -87,6 +87,9 @@
   <script>
 
     var myApp = {}
+    var conditionCounts = 0;
+    var procedureCounts = 0;
+    var drCounts = 0;
 
     FHIR.oauth2.ready()
       .then(function (client) {
@@ -108,6 +111,8 @@
             console.log(bundle.entry);
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (condition) {
+              conditionCounts += 1;
+
               console.log(condition.resource.id);
               $("#condition-id-table").append("<tr> \
               <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
@@ -133,6 +138,8 @@
             console.log(bundle.entry);
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (procedure) {
+              procedureCounts += 1;
+
               console.log(procedure.resource.id);
               $("#procedure-id-table").append("<tr> \
               <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
@@ -158,6 +165,8 @@
             console.log(bundle.entry);
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (dr) {
+              drCounts += 1;
+
               console.log(dr.resource.id);
               $("#document-reference-id-table").append("<tr> \
               <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
