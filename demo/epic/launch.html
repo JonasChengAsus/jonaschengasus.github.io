@@ -12,7 +12,7 @@
 	<script>
 		FHIR.oauth2.authorize({
 			'client_id': '53de4a71-10f6-4cb0-be14-ba2b39ff7888',
-			'scope': 'patient/Patient.read patient/Patient.search patient/Observation.read patient/Observation.search launch online_access openid profile',
+			'scope': 'patient/*.read patient/*.search StructureDefinition/*.read StructureDefinition/*.search launch fhirUser online_access openid profile',
 			'redirect_uri': location.href.substring(0, location.href.lastIndexOf("/"))
 		});
 	</script>
