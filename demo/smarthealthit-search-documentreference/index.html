@@ -118,7 +118,7 @@
       query.set("subject", patient.resource.id);
       // search all patients
       await myApp.smart.request(
-        "DocumenetReference?" + query, {
+        "DocumentReference?" + query, {
         pageLimit: 0,   // get all pages
         onPage(bundle) {
           //if (bundle.entry != undefined) {
