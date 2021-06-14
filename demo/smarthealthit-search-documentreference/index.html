@@ -115,23 +115,23 @@
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
-      query.set("test", patient.resource.id);
+      query.set("subject", patient.resource.id);
       // search all patients
       await myApp.smart.request(
         "DocumentReference?" + query, {
         pageLimit: 0,   // get all pages
         onPage(bundle) {
-          //if (bundle.entry != undefined) {
-          console.log(bundle.entry);
-          console.log(bundle.entry.length);
-          bundle.entry.forEach(function (dr) {
-            console.log(dr.resource.id);
-            $("#document-reference-id-table").append("<tr> \
+          if (bundle.entry != undefined) {
+            console.log(bundle.entry);
+            console.log(bundle.entry.length);
+            bundle.entry.forEach(function (dr) {
+              console.log(dr.resource.id);
+              $("#document-reference-id-table").append("<tr> \
               <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
               <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
               </tr>");
-          });
-          //}
+            });
+          }
         },
       });
     }
