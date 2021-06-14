@@ -93,7 +93,7 @@
       </tr>
     </table>
 
-    <h2>Patient Resource</h2>
+    <h2>Patient Information</h2>
     <table>
       <tr>
         <th>First Name:</th>
@@ -204,6 +204,86 @@
       $('#user-type').html(userType);
       $('#access-token').html(accessToken);
 
+      // resource id
+      var patientId = myApp.smart.getPatientId();
+      var encounterId = myApp.smart.getEncounterId();
+      $('#patient-id').html(patientId);
+      $('#encounter-id').html(encounterId);
+
+      // patient information
+      var gender = patient.gender;
+      var birthdate = patient.birthDate;
+      var fname = '';
+      var lname = '';
+      if (typeof patient.name[1] !== 'undefined') {
+        fname = patient.name[1].given.join(' ');
+        lname = patient.name[1].family;
+      }
+
+      $('#fname').html(fname);
+      $('#lname').html(lname);
+      $('#gender').html(gender);
+      $('#birthdate').html(birthdate);
+
+      // encounter information
+      if (encounter != undefined) {
+        var periodStart = encounter.period.start;
+        var periodEnd = encounter.period.end;
+        var status = encounter.status;
+        var type = encounter.type[0].text;
+
+        $('#period-start').html(periodStart);
+        $('#period-end').html(periodEnd);
+        $('#status').html(status);
+        $('#type').html(type);
+      }
+
+      // search related condition
+      // var query = new URLSearchParams();
+      // query.set("encounter", encounterId);
+      // var conditionRef = await myApp.smart.patient.request(
+      //   "Condition?" + query, {
+      //   pageLimit: 0,   // get all pages
+      // });
+      // console.log(conditionRef[0].entry);
+
+      // if (conditionRef[0].entry != undefined) {
+      //   condition = conditionRef[0].entry[0].resource;
+      //   conditionId = condition.id;
+      //   $('#condition-id').html(conditionId);
+      // }
+
+      // // search related procedure
+      // var query = new URLSearchParams();
+      // query.set("subject", patientId);
+      // var procedureRef = await myApp.smart.patient.request(
+      //   "Procedure?" + query, {
+      //   pageLimit: 0,   // get all pages
+      // });
+      // console.log(procedureRef[0].entry);
+
+      // if (procedureRef[0].entry != undefined) {
+      //   procedure = procedureRef[0].entry[0].resource;
+      //   procedureId = procedure.id;
+      //   $('#procedure-id').html(procedureId);
+      // }
+
+      // // search related documentreference
+      // var query = new URLSearchParams();
+      // query.set("subject", patientId);
+      // var drRef = await myApp.smart.patient.request(
+      //   "DocumentReference?" + query, {
+      //   pageLimit: 0,   // get all pages
+      // });
+      // console.log(drRef[0].entry);
+
+      // if (drRef[0].entry != undefined) {
+      //   documentReference = drRef[0].entry[0].resource;
+      //   documentReferenceId = documentReference.id;
+      //   $('#document-reference-id').html(documentReferenceId);
+      // }
+
+      // search related observation
       var query = new URLSearchParams();
       var categories = ['vital-signs'];
       query.set("category", categories.join(","));
@@ -229,25 +309,6 @@
         }
       });
 
-      var gender = patient.gender;
-      console.log("patient.gender: " + gender);
-
-      var birthdate = patient.birthDate;
-      console.log("patient.birthDate: " + birthdate);
-
-      var fname = '';
-      var lname = '';
-
-      if (typeof patient.name[1] !== 'undefined') {
-        fname = patient.name[1].given.join(' ');
-        lname = patient.name[1].family;
-      }
-      console.log("patient.name: " + fname + ", " + lname);
-
-      $('#fname').html(fname);
-      $('#lname').html(lname);
-      $('#gender').html(gender);
-      $('#birthdate').html(birthdate);
       $('#height').html(getQuantityValueAndUnit(height));
       $('#weight').html(getQuantityValueAndUnit(weight));
 
