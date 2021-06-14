@@ -19,6 +19,16 @@
 <body>
 
   <div id="main">
+    <h2>All DocumentReference IDs</h2>
+    <table>
+      <tr>
+        <th>Patient ID</th>
+        <th>DocumentReference ID</th>
+      </tr>
+
+      <tbody id="document-reference-id-table"></tbody>
+    </table>
+
     <h2>All Procedure IDs</h2>
     <table>
       <tr>
@@ -101,6 +111,31 @@
       });
     }
 
+    async function searchDocumentReference(patient) {
+      console.log(patient.resource.id);
+
+      var query = new URLSearchParams();
+      query.set("subject", patient.resource.id);
+      // search all patients
+      await myApp.smart.request(
+        "DocumenetReference?" + query, {
+        pageLimit: 0,   // get all pages
+        onPage(bundle) {
+          //if (bundle.entry != undefined) {
+          console.log(bundle.entry);
+          console.log(bundle.entry.length);
+          bundle.entry.forEach(function (dr) {
+            console.log(dr.resource.id);
+            $("#document-reference-id-table").append("<tr> \
+              <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
+              </tr>");
+          });
+          //}
+        },
+      });
+    }
+
     async function searchPatient() {
 
       var query = new URLSearchParams();
@@ -114,6 +149,7 @@
           console.log(bundle.entry);
           console.log(bundle.entry.length);
           bundle.entry.forEach(function (patient) {
+            searchDocumentReference(patient);
             searchProcedure(patient);
             searchCondition(patient);
           });
