@@ -115,7 +115,7 @@
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
-      query.set("subject", patient.resource.id);
+      query.set("test", patient.resource.id);
       // search all patients
       await myApp.smart.request(
         "DocumentReference?" + query, {
