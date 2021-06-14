@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<script src='dist/fhir-client-v2.js'></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+  <style>
+    #main{background:lightgray; margin:1em; padding:1em;font-size:2em;}    
+  </style>
+</head>
+
+<body>
+
+  <div id="main">
+      <h2>Patient Resource</h2>
+      <table>
+        <tr>
+          <th>First Name:</th>
+          <td id='fname'></td>
+        </tr>
+        <tr>
+          <th>Last Name:</th>
+          <td id='lname'></td>
+        </tr>
+        <tr>
+          <th>Gender:</th>
+          <td id='gender'></td>
+        </tr>
+        <tr>
+          <th>Date of Birth:</th>
+          <td id='birthdate'></td>
+        </tr>
+      </table>
+      <h2>Observation Resource</h2>
+      <table>
+        <tr>
+          <th>Height:</th>
+          <td id='height'></td>
+        </tr>
+        <tr>
+          <th>Weight:</th>
+          <td id='weight'></td>
+        </tr>
+      </table>
+  </div>
+
+	<script>
+
+		var myApp = {}
+
+    FHIR.oauth2.ready()
+    .then(function(client){ 
+      myApp.smart = client
+      doRequests()
+    })
+
+    function getQuantityValueAndUnit(ob) {
+      if (typeof ob === 'object') {
+        ob = ob[0]
+        if (typeof ob != 'undefined' &&
+            typeof ob.valueQuantity != 'undefined' &&
+            typeof ob.valueQuantity.value != 'undefined' &&
+            typeof ob.valueQuantity.unit != 'undefined') {
+              return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
+        }
+      }
+      return 'not available';
+    }
+
+    async function doRequests(){
+
+      var patient = await myApp.smart.patient.read();
+      console.log(patient);
+
+      var query = new URLSearchParams();
+      var categories = ['vital-signs'];
+      query.set("category", categories.join(","));      
+      var obv = await myApp.smart.patient.request(
+        "Observation?" + query, {
+        pageLimit: 0,   // get all pages             
+      });
+      console.log(obv[0].entry);
+
+      var height
+      var weight
+      obv[0].entry.forEach(function (o) {
+        byCodes = myApp.smart.byCodes(o.resource, 'code');
+        console.log(byCodes);
+
+        if (typeof height === 'undefined' && byCodes('8302-2').length) {
+          height = byCodes('8302-2');
+          console.log(height);
+        }
+        if (typeof weight === 'undefined' && byCodes('29463-7').length) {
+          weight = byCodes('29463-7');
+          console.log(weight);
+        }
+      });
+
+      var gender = patient.gender;
+      console.log("patient.gender: " + gender);
+
+      var birthdate = patient.birthDate;
+      console.log("patient.birthDate: " + birthdate);
+
+      var fname = '';
+      var lname = '';
+
+      if (typeof patient.name[1] !== 'undefined') {
+        fname = patient.name[1].given.join(' ');
+        lname = patient.name[1].family;
+      }
+      console.log("patient.name: " + fname + ", " + lname);
+
+      $('#fname').html(fname);
+      $('#lname').html(lname);
+      $('#gender').html(gender);
+      $('#birthdate').html(birthdate);
+      $('#height').html(getQuantityValueAndUnit(height));
+      $('#weight').html(getQuantityValueAndUnit(weight));
+
+    }
+	</script>
+
+</body>
+
+</html>
