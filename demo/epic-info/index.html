@@ -3,83 +3,213 @@
 
 <head>
 
-	<script src='dist/fhir-client-v2.js'></script>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src='dist/fhir-client-v2.js'></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
   <style>
-    #main{background:lightgray; margin:1em; padding:1em;font-size:2em;}    
+    #main {
+      background: lightgray;
+      margin: 1em;
+      padding: 1em;
+      font-size: 2em;
+    }
+
+    td.token {
+      width: 50px;
+      max-width: 50px;
+      padding: 10px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
 <body>
 
   <div id="main">
-      <h2>Patient Resource</h2>
-      <table>
-        <tr>
-          <th>First Name:</th>
-          <td id='fname'></td>
-        </tr>
-        <tr>
-          <th>Last Name:</th>
-          <td id='lname'></td>
-        </tr>
-        <tr>
-          <th>Gender:</th>
-          <td id='gender'></td>
-        </tr>
-        <tr>
-          <th>Date of Birth:</th>
-          <td id='birthdate'></td>
-        </tr>
-      </table>
-      <h2>Observation Resource</h2>
-      <table>
-        <tr>
-          <th>Height:</th>
-          <td id='height'></td>
-        </tr>
-        <tr>
-          <th>Weight:</th>
-          <td id='weight'></td>
-        </tr>
-      </table>
+    <h2>FHIR</h2>
+    <table>
+      <tr>
+        <th>FHIR Version:</th>
+        <td id='fhir-version'>no available</td>
+      </tr>
+      <tr>
+        <th>FHIR Release:</th>
+        <td id='fhir-release'>no available</td>
+      </tr>
+      <tr>
+        <th>Auth URI:</th>
+        <td id='authorize-uri'>no available</td>
+      </tr>
+      <tr>
+        <th>Server URI:</th>
+        <td id='server-uri'>no available</td>
+      </tr>
+      <tr>
+        <th>Client ID:</th>
+        <td id='client-id'>no available</td>
+      </tr>
+      <tr>
+        <th>Scope:</th>
+        <td id='scope'>no available</td>
+      </tr>
+      <tr>
+        <th>User ID:</th>
+        <td id='user-id'>no available</td>
+      </tr>
+      <tr>
+        <th>User Type:</th>
+        <td id='user-type'>no available</td>
+      </tr>
+      <tr>
+        <th>Access Token:</th>
+        <td id='access-token' class="token">no available</td>
+      </tr>
+    </table>
+
+    <h2>Resource ID</h2>
+    <table>
+      <tr>
+        <th>Patient:</th>
+        <td id='patient-id'></td>
+      </tr>
+      <tr>
+        <th>Encounter:</th>
+        <td id='encounter-id'>no available</td>
+      </tr>
+      <tr>
+        <th>Condition:</th>
+        <td id='condition-id'>no available</td>
+      </tr>
+      <tr>
+        <th>Procedure:</th>
+        <td id='procedure-id'>no available</td>
+      </tr>
+      <tr>
+        <th>DocumentReference:</th>
+        <td id='document-reference-id'>no available</td>
+      </tr>
+    </table>
+
+    <h2>Patient Resource</h2>
+    <table>
+      <tr>
+        <th>First Name:</th>
+        <td id='fname'>no available</td>
+      </tr>
+      <tr>
+        <th>Last Name:</th>
+        <td id='lname'>no available</td>
+      </tr>
+      <tr>
+        <th>Gender:</th>
+        <td id='gender'>no available</td>
+      </tr>
+      <tr>
+        <th>Date of Birth:</th>
+        <td id='birthdate'>no available</td>
+      </tr>
+    </table>
+
+    <h2>Encounter Information</h2>
+    <table>
+      <tr>
+        <th>Start:</th>
+        <td id='period-start'>no available</td>
+      </tr>
+      <tr>
+        <th>End:</th>
+        <td id='period-end'>no available</td>
+      </tr>
+      <tr>
+        <th>Status:</th>
+        <td id='status'>no available</td>
+      </tr>
+      <tr>
+        <th>Type:</th>
+        <td id='type'>no available</td>
+      </tr>
+    </table>
+
+    <h2>Observation Information</h2>
+    <table>
+      <tr>
+        <th>Height:</th>
+        <td id='height'></td>
+      </tr>
+      <tr>
+        <th>Weight:</th>
+        <td id='weight'></td>
+      </tr>
+    </table>
   </div>
 
-	<script>
+  <script>
 
-		var myApp = {}
+    var myApp = {}
 
     FHIR.oauth2.ready()
-    .then(function(client){ 
-      myApp.smart = client
-      doRequests()
-    })
+      .then(function (client) {
+        myApp.smart = client
+        doRequests()
+      })
 
     function getQuantityValueAndUnit(ob) {
       if (typeof ob === 'object') {
         ob = ob[0]
         if (typeof ob != 'undefined' &&
-            typeof ob.valueQuantity != 'undefined' &&
-            typeof ob.valueQuantity.value != 'undefined' &&
-            typeof ob.valueQuantity.unit != 'undefined') {
-              return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
+          typeof ob.valueQuantity != 'undefined' &&
+          typeof ob.valueQuantity.value != 'undefined' &&
+          typeof ob.valueQuantity.unit != 'undefined') {
+          return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
         }
       }
       return 'not available';
     }
 
-    async function doRequests(){
+    async function doRequests() {
 
+      // obtains patient information
       var patient = await myApp.smart.patient.read();
       console.log(patient);
 
+      // obtains encounter information
+      try {
+        var encounter = await myApp.smart.encounter.read();
+        console.log(encounter);
+      } catch (err) {
+        console.error(err)
+      }
+
+      // fhir information
+      var fhirVersion = await myApp.smart.getFhirVersion();
+      var fhirRelease = await myApp.smart.getFhirRelease();
+      var authUri = myApp.smart.state.authorizeUri;
+      var serverUri = myApp.smart.state.serverUrl;
+      var clientId = myApp.smart.state.clientId;
+      var scope = myApp.smart.state.scope;
+      var accessToken = myApp.smart.state.tokenResponse.access_token;
+      var userId = myApp.smart.getUserId();
+      var userType = myApp.smart.getUserType();
+
+      $('#fhir-version').html(fhirVersion);
+      $('#fhir-release').html(fhirRelease);
+      $('#authorize-uri').html(authUri);
+      $('#server-uri').html(serverUri);
+      $('#client-id').html(clientId);
+      $('#scope').html(scope);
+      $('#user-id').html(userId);
+      $('#user-type').html(userType);
+      $('#access-token').html(accessToken);
+
       var query = new URLSearchParams();
       var categories = ['vital-signs'];
-      query.set("category", categories.join(","));      
+      query.set("category", categories.join(","));
       var obv = await myApp.smart.patient.request(
         "Observation?" + query, {
-        pageLimit: 0,   // get all pages             
+        pageLimit: 0,   // get all pages
       });
       console.log(obv[0].entry);
 
@@ -122,7 +252,7 @@
       $('#weight').html(getQuantityValueAndUnit(weight));
 
     }
-	</script>
+  </script>
 
 </body>
 
