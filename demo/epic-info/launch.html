@@ -10,11 +10,12 @@
 	<p>Hello, I am the page "launch.html"</p>
 
 	<script>
-		FHIR.oauth2.authorize({
-			'client_id': 'f39bd276-5037-4c52-b141-18ac308ec779',
-			'scope': 'patient/*.read patient/*.search StructureDefinition/*.read StructureDefinition/*.search launch fhirUser online_access openid profile',
-			'redirect_uri': location.href.substring(0, location.href.lastIndexOf("/"))
-		});
+		console.log(FHIR.oauth2)
+		// FHIR.oauth2.authorize({
+		// 	'client_id': 'f39bd276-5037-4c52-b141-18ac308ec779',
+		// 	'scope': 'patient/*.read patient/*.search StructureDefinition/*.read StructureDefinition/*.search launch fhirUser online_access openid profile',
+		// 	'redirect_uri': location.href.substring(0, location.href.lastIndexOf("/"))
+		// });
 	</script>
 
 </body>
