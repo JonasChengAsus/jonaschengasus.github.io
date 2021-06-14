@@ -44,7 +44,8 @@
 
   <div id="main">
     <h2>All DocumentReference IDs</h2>
-    <button type="button" class="collapsible">Collapsible DocumentReferences</button>
+    <button type="button" class="collapsible">Collapsible DocumentReferences (<div id="document-reference-counters">0
+      </div>)</button>
     <div class="content">
       <table>
         <tr>
@@ -57,7 +58,8 @@
     </div>
 
     <h2>All Procedure IDs</h2>
-    <button type="button" class="collapsible">Collapsible Procedures</button>
+    <button type="button" class="collapsible">Collapsible Procedures (<div id="procedure-counters">0</div>
+      )</button>
     <div class="content">
       <table>
         <tr>
@@ -70,7 +72,7 @@
     </div>
 
     <h2>All Condition IDs</h2>
-    <button type="button" class="collapsible">Collapsible Conditions</button>
+    <button type="button" class="collapsible">Collapsible Conditions (<div id="condition-counters">0</div>)</button>
     <div class="content">
       <table>
         <tr>
@@ -112,6 +114,7 @@
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (condition) {
               conditionCounts += 1;
+              $('#condition-counters').html(conditionCounts);
 
               console.log(condition.resource.id);
               $("#condition-id-table").append("<tr> \
@@ -139,6 +142,7 @@
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (procedure) {
               procedureCounts += 1;
+              $('#procedure-counters').html(procedureCounts);
 
               console.log(procedure.resource.id);
               $("#procedure-id-table").append("<tr> \
@@ -166,6 +170,7 @@
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (dr) {
               drCounts += 1;
+              $('#document-reference-counters').html(drCounts);
 
               console.log(dr.resource.id);
               $("#document-reference-id-table").append("<tr> \
