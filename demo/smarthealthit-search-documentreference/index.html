@@ -13,6 +13,30 @@
       padding: 1em;
       font-size: 2em;
     }
+
+    .collapsible {
+      background-color: #777;
+      color: white;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .active,
+    .collapsible:hover {
+      background-color: #555;
+    }
+
+    .content {
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      background-color: #f1f1f1;
+    }
   </style>
 </head>
 
@@ -20,34 +44,43 @@
 
   <div id="main">
     <h2>All DocumentReference IDs</h2>
-    <table>
-      <tr>
-        <th>Patient ID</th>
-        <th>DocumentReference ID</th>
-      </tr>
+    <button type="button" class="collapsible">DocumentReferences</button>
+    <div class="content">
+      <table>
+        <tr>
+          <th>Patient ID</th>
+          <th>DocumentReference ID</th>
+        </tr>
 
-      <tbody id="document-reference-id-table"></tbody>
-    </table>
+        <tbody id="document-reference-id-table"></tbody>
+      </table>
+    </div>
 
     <h2>All Procedure IDs</h2>
-    <table>
-      <tr>
-        <th>Patient ID</th>
-        <th>Procedure ID</th>
-      </tr>
+    <button type="button" class="collapsible">Procedures</button>
+    <div class="content">
+      <table>
+        <tr>
+          <th>Patient ID</th>
+          <th>Procedure ID</th>
+        </tr>
 
-      <tbody id="procedure-id-table"></tbody>
-    </table>
+        <tbody id="procedure-id-table"></tbody>
+      </table>
+    </div>
 
-    <h2>All Conditions IDs</h2>
-    <table>
-      <tr>
-        <th>Patient ID</th>
-        <th>Condition ID</th>
-      </tr>
+    <h2>All Condition IDs</h2>
+    <button type="button" class="collapsible">Conditions</button>
+    <div class="content">
+      <table>
+        <tr>
+          <th>Patient ID</th>
+          <th>Condition ID</th>
+        </tr>
 
-      <tbody id="condition-id-table"></tbody>
-    </table>
+        <tbody id="condition-id-table"></tbody>
+      </table>
+    </div>
 
   </div>
 
