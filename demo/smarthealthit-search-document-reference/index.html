@@ -64,17 +64,13 @@
             console.log(bundle.entry.length);
 
             // patient information
-            var gender = patient.gender;
-            var birthdate = patient.birthDate;
+            var gender = patient.resource.gender;
+            var birthdate = patient.resource.birthDate;
             var fname = '';
             var lname = '';
-            console.log(patient);
-            if (typeof patient.name !== undefined && typeof patient.name[1] !== undefined) {
-              fname = patient.name[1].given.join(' ');
-              lname = patient.name[1].family;
-            } else {
-              console.error(patient);
-            }
+            console.log(patient.resource);
+            fname = patient.resource.name[1].given.join(' ');
+            lname = patient.resource.name[1].family;
 
             bundle.entry.forEach(function (dr) {
               localCounts += 1;
