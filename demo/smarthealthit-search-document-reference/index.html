@@ -50,6 +50,7 @@
 
     async function searchEncounter(patient) {
       console.log(patient.resource.id);
+      var queue = [];
 
       var query = new URLSearchParams();
       query.set("subject", patient.resource.id);
@@ -62,10 +63,15 @@
             console.log(bundle.entry);
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (encounter) {
-              searchDocumentReference(patient, encounter);
+              queue.push(encounter);
+              // searchDocumentReference(patient, encounter);
             });
           }
         },
+      });
+
+      queue.forEach(function (encounter) {
+        searchDocumentReference(patient, encounter);
       });
     }
 
