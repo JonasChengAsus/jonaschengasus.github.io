@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <script src='dist/fhir-client-v2.js'></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+  <style>
+    #main {
+      background: lightgray;
+      margin: 1em;
+      padding: 1em;
+      font-size: 2em;
+    }
+
+    .collapsible {
+      background-color: #777;
+      color: white;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .active,
+    .collapsible:hover {
+      background-color: #555;
+    }
+
+    .content {
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="main">
+    <h2>All DocumentReference IDs</h2>
+    <button type="button" class="collapsible">Collapsible DocumentReferences (<div style="display: inline"
+        id="document-reference-counters">0
+      </div>)</button>
+    <div class="content">
+      <table>
+        <tr>
+          <th>Patient ID</th>
+          <th>DocumentReference ID</th>
+        </tr>
+
+        <tbody id="document-reference-id-table"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+
+    var myApp = {}
+    var drCounts = 0;
+
+    FHIR.oauth2.ready()
+      .then(function (client) {
+        myApp.smart = client
+        searchPatient()
+      })
+
+    // async function searchCondition(patient) {
+    //   console.log(patient.resource.id);
+
+    //   var query = new URLSearchParams();
+    //   query.set("subject", patient.resource.id);
+    //   // search all patients
+    //   await myApp.smart.request(
+    //     "Condition?" + query, {
+    //     pageLimit: 0,   // get all pages
+    //     onPage(bundle) {
+    //       if (bundle.entry != undefined) {
+    //         console.log(bundle.entry);
+    //         console.log(bundle.entry.length);
+    //         bundle.entry.forEach(function (condition) {
+    //           conditionCounts += 1;
+    //           $('#condition-counters').html(conditionCounts);
+
+    //           console.log(condition.resource.id);
+    //           $("#condition-id-table").append("<tr> \
+    //           <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+    //           <td><div class='condition-id'>" + condition.resource.id + "</div></td> \
+    //           </tr>");
+    //         });
+    //       }
+    //     },
+    //   });
+    // }
+
+    // async function searchProcedure(patient) {
+    //   console.log(patient.resource.id);
+
+    //   var query = new URLSearchParams();
+    //   query.set("subject", patient.resource.id);
+    //   // search all patients
+    //   await myApp.smart.request(
+    //     "Procedure?" + query, {
+    //     pageLimit: 0,   // get all pages
+    //     onPage(bundle) {
+    //       if (bundle.entry != undefined) {
+    //         console.log(bundle.entry);
+    //         console.log(bundle.entry.length);
+    //         bundle.entry.forEach(function (procedure) {
+    //           procedureCounts += 1;
+    //           $('#procedure-counters').html(procedureCounts);
+
+    //           console.log(procedure.resource.id);
+    //           $("#procedure-id-table").append("<tr> \
+    //           <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+    //           <td><div class='procedure-id'>" + procedure.resource.id + "</div></td> \
+    //           </tr>");
+    //         });
+    //       }
+    //     },
+    //   });
+    // }
+
+    async function searchDocumentReference(patient) {
+      console.log(patient.resource.id);
+
+      var query = new URLSearchParams();
+      query.set("subject", patient.resource.id);
+      // search all patients
+      await myApp.smart.request(
+        "DocumentReference?" + query, {
+        pageLimit: 0,   // get all pages
+        onPage(bundle) {
+          if (bundle.entry != undefined) {
+            var localCounts = 0;
+            console.log(bundle.entry);
+            console.log(bundle.entry.length);
+            bundle.entry.forEach(function (dr) {
+              localCounts += 1;
+
+              console.log(dr.resource.id);
+              $("#document-reference-id-table").append("<tr> \
+              <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
+              </tr>");
+            });
+
+            drCounts += localCounts;
+            $('#document-reference-counters').html(drCounts);
+          }
+        },
+      });
+    }
+
+    async function searchPatient() {
+      var query = new URLSearchParams();
+      var genders = ['male', 'female'];
+      query.set("gender", genders.join(","));
+      // search all patients
+      await myApp.smart.request(
+        "Patient?" + query, {
+        pageLimit: 0,   // get all pages
+        onPage(bundle) {
+          console.log(bundle.entry);
+          console.log(bundle.entry.length);
+          bundle.entry.forEach(function (patient) {
+            searchDocumentReference(patient);
+            // searchProcedure(patient);
+            // searchCondition(patient);
+          });
+        },
+      });
+    }
+
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+  </script>
+
+</body>
+
+</html>
