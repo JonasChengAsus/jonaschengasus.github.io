@@ -64,13 +64,15 @@
             console.log(bundle.entry.length);
 
             // patient information
+            console.log(patient.resource);
             var gender = patient.resource.gender;
             var birthdate = patient.resource.birthDate;
             var fname = '';
             var lname = '';
-            console.log(patient.resource);
-            fname = patient.resource.name[1].given.join(' ');
-            lname = patient.resource.name[1].family;
+            if (typeof patient.name[0] !== undefined) {
+              fname = patient.resource.name[0].given.join(' ');
+              lname = patient.resource.name[0].family;
+            }
 
             bundle.entry.forEach(function (dr) {
               localCounts += 1;
