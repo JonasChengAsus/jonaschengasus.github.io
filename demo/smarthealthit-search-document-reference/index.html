@@ -69,7 +69,7 @@
             var birthdate = patient.resource.birthDate;
             var fname = '';
             var lname = '';
-            if (typeof patient.name[0] !== undefined) {
+            if (typeof patient.resource.name[0] !== undefined) {
               fname = patient.resource.name[0].given.join(' ');
               lname = patient.resource.name[0].family;
             }
