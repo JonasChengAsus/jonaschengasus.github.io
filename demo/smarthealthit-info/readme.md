@@ -3,6 +3,7 @@ This demo code is implemented base upon sandbox [smarthealthit](https://launch.s
 You may follow the instructions on the web site, and specify *App Launch URL* to test out.
 
 The app retrieves basic information from a single patient as follows.
+* FHIR information
 * Patient ID
   * patient information
 * Encounter ID
