@@ -51,6 +51,11 @@
       <table>
         <tr>
           <th>Patient ID</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>DOB</th>
+          <!-- <th>Encounter ID</th>
+          <th>Type</th> -->
           <th>DocumentReference ID</th>
         </tr>
 
@@ -71,62 +76,6 @@
         searchPatient()
       })
 
-    // async function searchCondition(patient) {
-    //   console.log(patient.resource.id);
-
-    //   var query = new URLSearchParams();
-    //   query.set("subject", patient.resource.id);
-    //   // search all patients
-    //   await myApp.smart.request(
-    //     "Condition?" + query, {
-    //     pageLimit: 0,   // get all pages
-    //     onPage(bundle) {
-    //       if (bundle.entry != undefined) {
-    //         console.log(bundle.entry);
-    //         console.log(bundle.entry.length);
-    //         bundle.entry.forEach(function (condition) {
-    //           conditionCounts += 1;
-    //           $('#condition-counters').html(conditionCounts);
-
-    //           console.log(condition.resource.id);
-    //           $("#condition-id-table").append("<tr> \
-    //           <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
-    //           <td><div class='condition-id'>" + condition.resource.id + "</div></td> \
-    //           </tr>");
-    //         });
-    //       }
-    //     },
-    //   });
-    // }
-
-    // async function searchProcedure(patient) {
-    //   console.log(patient.resource.id);
-
-    //   var query = new URLSearchParams();
-    //   query.set("subject", patient.resource.id);
-    //   // search all patients
-    //   await myApp.smart.request(
-    //     "Procedure?" + query, {
-    //     pageLimit: 0,   // get all pages
-    //     onPage(bundle) {
-    //       if (bundle.entry != undefined) {
-    //         console.log(bundle.entry);
-    //         console.log(bundle.entry.length);
-    //         bundle.entry.forEach(function (procedure) {
-    //           procedureCounts += 1;
-    //           $('#procedure-counters').html(procedureCounts);
-
-    //           console.log(procedure.resource.id);
-    //           $("#procedure-id-table").append("<tr> \
-    //           <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
-    //           <td><div class='procedure-id'>" + procedure.resource.id + "</div></td> \
-    //           </tr>");
-    //         });
-    //       }
-    //     },
-    //   });
-    // }
-
     async function searchDocumentReference(patient) {
       console.log(patient.resource.id);
 
@@ -141,16 +90,34 @@
             var localCounts = 0;
             console.log(bundle.entry);
             console.log(bundle.entry.length);
+
+            // patient information
+            var gender = patient.gender;
+            var birthdate = patient.birthDate;
+            var fname = '';
+            var lname = '';
+            if (typeof patient.name[1] !== 'undefined') {
+              fname = patient.name[1].given.join(' ');
+              lname = patient.name[1].family;
+            }
+
             bundle.entry.forEach(function (dr) {
               localCounts += 1;
 
+              // encounter information
+              console.log(dr);
+              console.log(dr).context;
               console.log(dr.resource.id);
               $("#document-reference-id-table").append("<tr> \
               <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              <td><div class='patient-name'>" + fname + ' ' + lname + "</div></td> \
+              <td><div class='patient-gender'>" + gender + "</div></td> \
+              <td><div class='patient-dob'>" + birthdate + "</div></td> \
               <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
               </tr>");
             });
 
+            // update counters
             drCounts += localCounts;
             $('#document-reference-counters').html(drCounts);
           }
@@ -171,8 +138,6 @@
           console.log(bundle.entry.length);
           bundle.entry.forEach(function (patient) {
             searchDocumentReference(patient);
-            // searchProcedure(patient);
-            // searchCondition(patient);
           });
         },
       });
