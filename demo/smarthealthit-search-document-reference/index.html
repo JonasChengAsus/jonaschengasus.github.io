@@ -64,7 +64,6 @@
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (encounter) {
               queue.push(encounter);
-              // searchDocumentReference(patient, encounter);
             });
           }
         },
@@ -81,7 +80,7 @@
 
       var query = new URLSearchParams();
       query.set("subject", patient.resource.id);
-      query.set("encounter", encounter.resource.id);
+      //query.set("encounter", encounter.resource.id);
       // search all document reference
       await myApp.smart.request(
         "DocumentReference?" + query, {
