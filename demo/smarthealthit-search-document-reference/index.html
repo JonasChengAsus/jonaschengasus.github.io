@@ -48,12 +48,35 @@
         searchPatient()
       })
 
-    async function searchDocumentReference(patient) {
+    async function searchEncounter(patient) {
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
       query.set("subject", patient.resource.id);
-      // search all patients
+      // search all encounters
+      await myApp.smart.request(
+        "Encounter?" + query, {
+        pageLimit: 0,   // get all pages
+        onPage(bundle) {
+          if (bundle.entry != undefined) {
+            console.log(bundle.entry);
+            console.log(bundle.entry.length);
+            bundle.entry.forEach(function (encounter) {
+              searchDocumentReference(patient, encounter);
+            });
+          }
+        },
+      });
+    }
+
+    async function searchDocumentReference(patient, encounter) {
+      console.log(patient.resource.id);
+      console.log(encounter.resource.id);
+
+      var query = new URLSearchParams();
+      //query.set("subject", patient.resource.id);
+      query.set("encounter", encounter.resource.id);
+      // search all document reference
       await myApp.smart.request(
         "DocumentReference?" + query, {
         pageLimit: 0,   // get all pages
@@ -79,7 +102,6 @@
 
               // encounter information
               console.log(dr);
-              console.log(dr).context;
               console.log(dr.resource.id);
               $("#document-reference-id-table").append("<tr> \
               <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
