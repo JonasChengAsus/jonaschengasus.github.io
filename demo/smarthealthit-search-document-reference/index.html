@@ -66,8 +66,8 @@
         pageLimit: 0,   // get all pages
         onPage(bundle) {
           if (bundle.entry != undefined) {
-            console.log(bundle.entry);
-            console.log(bundle.entry.length);
+            // console.log(bundle.entry);
+            // console.log(bundle.entry.length);
             bundle.entry.forEach(function (encounter) {
               queue.push(encounter);
             });
@@ -81,8 +81,8 @@
     }
 
     async function searchDocumentReference(patient, encounter) {
-      console.log(patient.resource.id);
-      console.log(encounter.resource.id);
+      console.log('patient id:' + patient.resource.id);
+      console.log('encounter id:' + encounter.resource.id);
 
       var query = new URLSearchParams();
       //query.set("subject", patient.resource.id);
@@ -140,8 +140,8 @@
         "Patient?" + query, {
         pageLimit: 0,   // get all pages
         onPage(bundle) {
-          console.log(bundle.entry);
-          console.log(bundle.entry.length);
+          // console.log(bundle.entry);
+          // console.log(bundle.entry.length);
           bundle.entry.forEach(function (patient) {
             searchEncounter(patient);
           });
