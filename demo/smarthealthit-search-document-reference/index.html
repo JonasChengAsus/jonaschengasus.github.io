@@ -62,7 +62,7 @@
             console.log(bundle.entry);
             console.log(bundle.entry.length);
             bundle.entry.forEach(function (encounter) {
-              searchDocumentReference(patient, encounter);
+              await searchDocumentReference(patient, encounter);
             });
           }
         },
