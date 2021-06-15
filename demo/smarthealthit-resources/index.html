@@ -44,7 +44,8 @@
 
   <div id="main">
     <h2>All DocumentReference IDs</h2>
-    <button type="button" class="collapsible">Collapsible DocumentReferences (<div style="display: inline" id="document-reference-counters">0
+    <button type="button" class="collapsible">Collapsible DocumentReferences (<div style="display: inline"
+        id="document-reference-counters">0
       </div>)</button>
     <div class="content">
       <table>
@@ -57,8 +58,23 @@
       </table>
     </div>
 
+    <h2>All Encounter IDs</h2>
+    <button type="button" class="collapsible">Collapsible Encounters (<div style="display: inline"
+        id="encounter-counters">0</div>)</button>
+    <div class="content">
+      <table>
+        <tr>
+          <th>Patient ID</th>
+          <th>Encounter ID</th>
+        </tr>
+
+        <tbody id="encounter-id-table"></tbody>
+      </table>
+    </div>
+
     <h2>All Procedure IDs</h2>
-    <button type="button" class="collapsible">Collapsible Procedures (<div style="display: inline" id="procedure-counters">0</div>
+    <button type="button" class="collapsible">Collapsible Procedures (<div style="display: inline"
+        id="procedure-counters">0</div>
       )</button>
     <div class="content">
       <table>
@@ -72,7 +88,8 @@
     </div>
 
     <h2>All Condition IDs</h2>
-    <button type="button" class="collapsible">Collapsible Conditions (<div style="display: inline" id="condition-counters">0</div>)</button>
+    <button type="button" class="collapsible">Collapsible Conditions (<div style="display: inline"
+        id="condition-counters">0</div>)</button>
     <div class="content">
       <table>
         <tr>
@@ -91,6 +108,7 @@
     var myApp = {}
     var conditionCounts = 0;
     var procedureCounts = 0;
+    var encounterCounts = 0;
     var drCounts = 0;
 
     FHIR.oauth2.ready()
@@ -104,7 +122,7 @@
 
       var query = new URLSearchParams();
       query.set("subject", patient.resource.id);
-      // search all patients
+      // search all conditions
       await myApp.smart.request(
         "Condition?" + query, {
         pageLimit: 0,   // get all pages
@@ -132,7 +150,7 @@
 
       var query = new URLSearchParams();
       query.set("subject", patient.resource.id);
-      // search all patients
+      // search all procedures
       await myApp.smart.request(
         "Procedure?" + query, {
         pageLimit: 0,   // get all pages
@@ -155,12 +173,40 @@
       });
     }
 
+    async function searchEncounter(patient) {
+      console.log(patient.resource.id);
+
+      var query = new URLSearchParams();
+      query.set("subject", patient.resource.id);
+      // search all encounters
+      await myApp.smart.request(
+        "Encounter?" + query, {
+        pageLimit: 0,   // get all pages
+        onPage(bundle) {
+          if (bundle.entry != undefined) {
+            console.log(bundle.entry);
+            console.log(bundle.entry.length);
+            bundle.entry.forEach(function (encounter) {
+              encounterCounts += 1;
+              $('#encounter-counters').html(encounterCounts);
+
+              console.log(encounter.resource.id);
+              $("#encounter-id-table").append("<tr> \
+              <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              <td><div class='encounter-id'>" + encounter.resource.id + "</div></td> \
+              </tr>");
+            });
+          }
+        },
+      });
+    }
+
     async function searchDocumentReference(patient) {
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
       query.set("subject", patient.resource.id);
-      // search all patients
+      // search all document reference
       await myApp.smart.request(
         "DocumentReference?" + query, {
         pageLimit: 0,   // get all pages
@@ -196,6 +242,7 @@
           console.log(bundle.entry.length);
           bundle.entry.forEach(function (patient) {
             searchDocumentReference(patient);
+            searchEncounter(patient);
             searchProcedure(patient);
             searchCondition(patient);
           });
