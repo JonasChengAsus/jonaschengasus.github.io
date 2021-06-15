@@ -7,18 +7,27 @@ When a developer registers an app, the website creates an app record in the Epic
 
 1. Navigate to the Build Apps page
 2. Select "Create My First App”
+
+   ![Create My First App](https://fhir.epic.com/Content/images/epiconfhirrequestprocess/buildapp1.png)
+
 3. Complete the Create an App form
 
   * Application name
   * Application Audience: Clinicians or Administrative Users
   * Application access scope:
 
-    * Patient.read (R4)
-    * Patient.search (R4)
-    * Observation.read (Labs) (R4)
-    * Observation.search (Labs) (R4)
-    * Observation.read (Vitals) (R4)
-    * Observation.search (Vitals) (R4)
+    * Patient.read* (R4)
+    * Patient.search* (R4)
+    * Observation.read* (R4)
+    * Observation.search* (R4)
+    * Condition.read* (R4)
+    * Condition.search* (R4)
+    * Procedure.read* (R4)
+    * Procedure.search* (R4)
+    * DocumentReference.read* (R4)
+    * DocumentReference.search* (R4)
+
+  ![Complete the Create an App form](https://fhir.epic.com/Content/images/epiconfhirrequestprocess/buildapp2.png)
 
   * Redirect Uri = your repl.it url, ex: https://epic.jonascheng1.repl.co
 
