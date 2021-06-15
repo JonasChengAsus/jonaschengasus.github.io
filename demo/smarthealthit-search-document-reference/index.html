@@ -68,11 +68,12 @@
             var birthdate = patient.birthDate;
             var fname = '';
             var lname = '';
+            console.log(patient);
             if (typeof patient.name !== undefined && typeof patient.name[1] !== undefined) {
               fname = patient.name[1].given.join(' ');
               lname = patient.name[1].family;
             } else {
-              console.error(patient)
+              console.error(patient);
             }
 
             bundle.entry.forEach(function (dr) {
