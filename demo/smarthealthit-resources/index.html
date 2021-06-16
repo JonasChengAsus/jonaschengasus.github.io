@@ -49,6 +49,14 @@
   <div class="spinner-border text-primary" role="status"></div>
 
   <div id="main">
+    <h2>FHIR</h2>
+    <table>
+      <tr>
+        <th>FHIR Release:</th>
+        <td id='fhir-release'></td>
+      </tr>
+    </table>
+
     <h2>All DocumentReference IDs</h2>
     <button type="button" class="collapsible">Collapsible DocumentReferences (<div style="display: inline"
         id="document-reference-counters">0
@@ -61,6 +69,19 @@
         </tr>
 
         <tbody id="document-reference-id-table"></tbody>
+      </table>
+    </div>
+
+    <h2>All Patient IDs</h2>
+    <button type="button" class="collapsible">Collapsible Patients (<div style="display: inline" id="patient-counters">0
+      </div>)</button>
+    <div class="content">
+      <table>
+        <tr>
+          <th>Patient ID</th>
+        </tr>
+
+        <tbody id="patient-id-table"></tbody>
       </table>
     </div>
 
@@ -112,6 +133,7 @@
   <script>
 
     var myApp = {}
+    var patientCounts = 0;
     var conditionCounts = 0;
     var procedureCounts = 0;
     var encounterCounts = 0;
@@ -236,6 +258,10 @@
     }
 
     async function searchPatient() {
+      // fhir information
+      var fhirRelease = await myApp.smart.getFhirRelease();
+      $('#fhir-release').html(fhirRelease);
+
       var query = new URLSearchParams();
       var genders = ['male', 'female'];
       query.set("gender", genders.join(","));
@@ -247,6 +273,13 @@
           console.log(bundle.entry);
           console.log(bundle.entry.length);
           bundle.entry.forEach(function (patient) {
+            patientCounts += 1;
+            $('#patient-counters').html(patientCounts);
+
+            $("#patient-id-table").append("<tr> \
+              <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              </tr>");
+
             searchDocumentReference(patient);
             searchEncounter(patient);
             searchProcedure(patient);
