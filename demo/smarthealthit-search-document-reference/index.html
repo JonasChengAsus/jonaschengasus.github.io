@@ -25,12 +25,22 @@
   <div class="spinner-border text-primary" role="status"></div>
 
   <div id="main">
+    <h2>FHIR</h2>
+    <table>
+      <tr>
+        <th>FHIR Release:</th>
+        <td id='fhir-release'></td>
+      </tr>
+    </table>
+
     <h2>
       <div style="display: inline" id="patient-counters">0</div> patients scanned
     </h2>
+
     <h2>
       <div style="display: inline" id="encounter-counters">0</div> encounters scanned
     </h2>
+
     <h2>All DocumentReference IDs(<div style="display: inline" id="document-reference-counters">0
       </div>)</h2>
     <table>
@@ -144,6 +154,10 @@
     }
 
     async function searchPatient() {
+      // fhir information
+      var fhirRelease = await myApp.smart.getFhirRelease();
+      $('#fhir-release').html(fhirRelease);
+
       var query = new URLSearchParams();
       var genders = ['male', 'female'];
       query.set("gender", genders.join(","));
