@@ -72,14 +72,14 @@
         searchPatient()
       })
 
-    function searchEncounter(patient) {
+    async function searchEncounter(patient) {
       console.log(patient.resource.id);
       var queue = [];
 
       var query = new URLSearchParams();
       query.set("subject", patient.resource.id);
       // search all encounters
-      myApp.smart.request(
+      await myApp.smart.request(
         "Encounter?" + query, {
         pageLimit: 0,   // get all pages
         onPage(bundle) {
@@ -102,7 +102,7 @@
       });
     }
 
-    function searchDocumentReference(patient, encounter) {
+    async function searchDocumentReference(patient, encounter) {
       console.log('patient id:' + patient.resource.id);
       console.log('encounter id:' + encounter.resource.id);
 
@@ -110,7 +110,7 @@
       // query.set("subject", patient.resource.id);
       query.set("encounter", encounter.resource.id);
       // search all document reference
-      myApp.smart.request(
+      await myApp.smart.request(
         "DocumentReference?" + query, {
         pageLimit: 0,   // get all pages
         onPage(bundle) {
@@ -175,17 +175,17 @@
             patientCounts += 1;
             $('#patient-counters').html(patientCounts);
 
-            // queue.push(patient);
-            searchEncounter(patient);
+            queue.push(patient);
+            // searchEncounter(patient);
             // searchDocumentReference(patient, patient);
           });
         },
       });
 
-      // queue.forEach(function (patient) {
-      //   searchEncounter(patient);
-      //   // searchDocumentReference(patient, patient);
-      // });
+      queue.forEach(function (patient) {
+        searchEncounter(patient);
+        // searchDocumentReference(patient, patient);
+      });
 
       $(".spinner-border").hide();
     }
