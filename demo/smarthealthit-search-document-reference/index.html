@@ -97,8 +97,8 @@
       console.log('encounter id:' + encounter.resource.id);
 
       var query = new URLSearchParams();
-      query.set("subject", patient.resource.id);
-      //query.set("encounter", encounter.resource.id);
+      // query.set("subject", patient.resource.id);
+      query.set("encounter", encounter.resource.id);
       // search all document reference
       await myApp.smart.request(
         "DocumentReference?" + query, {
@@ -159,8 +159,8 @@
             patientCounts += 1;
             $('#patient-counters').html(patientCounts);
 
-            //searchEncounter(patient);
-            searchDocumentReference(patient, patient);
+            searchEncounter(patient);
+            // searchDocumentReference(patient, patient);
           });
         },
       });
