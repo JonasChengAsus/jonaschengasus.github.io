@@ -158,6 +158,8 @@
       var fhirRelease = await myApp.smart.getFhirRelease();
       $('#fhir-release').html(fhirRelease);
 
+      var queue = [];
+
       var query = new URLSearchParams();
       var genders = ['male', 'female'];
       query.set("gender", genders.join(","));
@@ -173,10 +175,16 @@
             patientCounts += 1;
             $('#patient-counters').html(patientCounts);
 
-            searchEncounter(patient);
+            queue.push(patient);
+            // searchEncounter(patient);
             // searchDocumentReference(patient, patient);
           });
         },
+      });
+
+      queue.forEach(function (patient) {
+        searchEncounter(patient);
+        // searchDocumentReference(patient, patient);
       });
 
       $(".spinner-border").hide();
