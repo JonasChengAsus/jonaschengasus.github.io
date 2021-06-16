@@ -25,6 +25,12 @@
   <div class="spinner-border text-primary" role="status"></div>
 
   <div id="main">
+    <h2>
+      <div style="display: inline" id="patient-counters">0</div> patients scanned
+    </h2>
+    <h2>
+      <div style="display: inline" id="encounter-counters">0</div> encounters scanned
+    </h2>
     <h2>All DocumentReference IDs(<div style="display: inline" id="document-reference-counters">0
       </div>)</h2>
     <table>
@@ -46,6 +52,8 @@
   <script>
 
     var myApp = {}
+    var patientCounters = 0;
+    var encounterCounts = 0;
     var drCounts = 0;
 
     FHIR.oauth2.ready()
@@ -69,6 +77,9 @@
             // console.log(bundle.entry);
             // console.log(bundle.entry.length);
             bundle.entry.forEach(function (encounter) {
+              encounterCounts += 1;
+              $('#encounter-counters').html(encounterCounts);
+
               queue.push(encounter);
             });
           }
@@ -143,6 +154,9 @@
           // console.log(bundle.entry);
           // console.log(bundle.entry.length);
           bundle.entry.forEach(function (patient) {
+            patientCounts += 1;
+            $('#patient-counters').html(patientCounts);
+
             //searchEncounter(patient);
             searchDocumentReference(patient, patient);
           });
