@@ -107,8 +107,8 @@
       console.log('encounter id:' + encounter.resource.id);
 
       var query = new URLSearchParams();
-      // query.set("subject", patient.resource.id);
-      query.set("encounter", encounter.resource.id);
+      query.set("subject", patient.resource.id);
+      // query.set("encounter", encounter.resource.id);
       // search all document reference
       myApp.smart.request(
         "DocumentReference?" + query, {
