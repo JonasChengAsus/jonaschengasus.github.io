@@ -141,12 +141,12 @@
               console.log(dr);
 
               // document reference content
+              var content = dr.resource.content;
               var contentType = "not available";
               var url = "not available";
-              if (dr.content !== undefined && dr.content[0] !== undefined && dr.content[0].attachment) {
-                console.log(dr.content);
-                contentType = dr.content[0].attachment.contentType;
-                url = myApp.smart.state.serverUrl + dr.dr.content[0].attachment.url;
+              if (content !== undefined && content[0] !== undefined && content[0].attachment) {
+                contentType = content[0].attachment.contentType;
+                url = myApp.smart.state.serverUrl + content[0].attachment.url;
               }
 
               $("#document-reference-id-table").append("<tr> \
