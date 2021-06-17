@@ -193,9 +193,9 @@
       var birthdate = patient.birthDate;
       var fname = '';
       var lname = '';
-      if (typeof patient.name[1] !== 'undefined') {
-        fname = patient.name[1].given.join(' ');
-        lname = patient.name[1].family;
+      if (typeof patient.name[0] !== 'undefined') {
+        fname = patient.name[0].given.join(' ');
+        lname = patient.name[0].family;
       }
 
       $('#fname').html(fname);
