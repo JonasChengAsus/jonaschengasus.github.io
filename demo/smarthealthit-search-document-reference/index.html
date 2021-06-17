@@ -44,7 +44,7 @@
     <h2>All DocumentReference IDs(<div style="display: inline" id="document-reference-counters">0
       </div>)</h2>
     <table>
-      <tr>
+      <!-- <tr>
         <th>Patient ID</th>
         <th>Name</th>
         <th>Gender</th>
@@ -54,7 +54,7 @@
         <th>DocumentReference ID</th>
         <th>Content Type</th>
         <th>Content Uri</th>
-      </tr>
+      </tr> -->
 
       <tbody id="document-reference-id-table"></tbody>
     </table>
@@ -107,8 +107,8 @@
     }
 
     function searchDocumentReference(patient, encounter) {
-      console.log('patient id:' + patient.resource.id);
-      console.log('encounter id:' + encounter.resource.id);
+      // console.log('patient id:' + patient.resource.id);
+      // console.log('encounter id:' + encounter.resource.id);
 
       var query = new URLSearchParams();
       // query.set("subject", patient.resource.id);
@@ -120,8 +120,8 @@
         onPage(bundle) {
           if (bundle.entry != undefined) {
             var localCounts = 0;
-            console.log(bundle.entry);
-            console.log(bundle.entry.length);
+            // console.log(bundle.entry);
+            // console.log(bundle.entry.length);
 
             // patient information
             console.log(patient.resource);
@@ -137,6 +137,7 @@
             bundle.entry.forEach(function (dr) {
               localCounts += 1;
 
+              console.log(patient);
               console.log(encounter);
               console.log(dr);
 
@@ -149,17 +150,29 @@
                 url = myApp.smart.state.serverUrl + content[0].attachment.url;
               }
 
-              $("#document-reference-id-table").append("<tr> \
-              <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
-              <td><div class='patient-name'>" + fname + ' ' + lname + "</div></td> \
-              <td><div class='patient-gender'>" + gender + "</div></td> \
-              <td><div class='patient-dob'>" + birthdate + "</div></td> \
-              <td><div class='encounter-id'>" + encounter.resource.id + "</div></td> \
-              <td><div class='encounter-type'>" + encounter.resource.class + "</div></td> \
-              <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
-              <td><div class='document-reference-content-type'>" + contentType + "</div></td> \
-              <td><div class='document-reference-content-url'>" + url + "</div></td> \
-              </tr>");
+              $("#document-reference-id-table").append(" \
+              <tr><th>Patient ID</th><td>" + patient.resource.id + "</td></tr> \
+              <tr><th>Name:</th><td>" + fname + ' ' + lname + "</td></tr> \
+              <tr><th>Gender:</th><td>" + gender + "</td></tr> \
+              <tr><th>DOB:</th><td>" + birthdate + "</td></tr> \
+              <tr><th>Encounter ID:</th><td>" + encounter.resource.id + "</td></tr> \
+              <tr><th>Class</th><td>" + encounter.resource.class + "</td></tr> \
+              <tr><th>DocumentReference ID</th><td>" + dr.resource.id + "</td></tr> \
+              <tr><th>Content Type</th><td>" + contentType + "</td></tr> \
+              <tr> <th>Content Uri</th><td>" + url + "</td></tr> \
+              ");
+
+              // $("#document-reference-id-table").append("<tr> \
+              // <td><div class='patient-id'>" + patient.resource.id + "</div></td> \
+              // <td><div class='patient-name'>" + fname + ' ' + lname + "</div></td> \
+              // <td><div class='patient-gender'>" + gender + "</div></td> \
+              // <td><div class='patient-dob'>" + birthdate + "</div></td> \
+              // <td><div class='encounter-id'>" + encounter.resource.id + "</div></td> \
+              // <td><div class='encounter-type'>" + encounter.resource.class + "</div></td> \
+              // <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
+              // <td><div class='document-reference-content-type'>" + contentType + "</div></td> \
+              // <td><div class='document-reference-content-url'>" + url + "</div></td> \
+              // </tr>");
             });
 
             // update counters
