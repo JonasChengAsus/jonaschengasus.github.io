@@ -74,7 +74,9 @@
       })
 
     function searchEncounter(patient) {
-      console.log(patient.resource.id);
+      if (patient.resource.id === "06df83f5-dbaa-41b2-bbb2-bfa36d2aa93c") {
+        console.log(patient.resource.id);
+      }
 
       var queue = [];
 
