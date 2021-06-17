@@ -109,8 +109,10 @@
     }
 
     function searchDocumentReference(patient, encounter) {
-      console.log('patient id:' + patient.resource.id);
-      console.log('encounter id:' + encounter.resource.id);
+      if (patient.resource.id === "06df83f5-dbaa-41b2-bbb2-bfa36d2aa93c" || encounter.resource.id === "770831") {
+        console.log('patient id:' + patient.resource.id);
+        console.log('encounter id:' + encounter.resource.id);
+      }
 
       var query = new URLSearchParams();
       // query.set("subject", patient.resource.id);
@@ -181,7 +183,6 @@
             $('#patient-counters').html(patientCounts);
 
             searchEncounter(patient);
-            // searchDocumentReference(patient, patient);
           });
         },
       });
