@@ -78,8 +78,6 @@
       //   console.log('patient id:' + patient.resource.id);
       // }
 
-      // var queue = [];
-
       var query = new URLSearchParams();
       if (fhirRelease === 2) {
         query.set("patient", patient.resource.id);
@@ -100,15 +98,10 @@
               $('#encounter-counters').html(encounterCounts);
 
               searchDocumentReference(patient, encounter);
-              // queue.push(encounter);
             });
           }
         },
       });
-
-      // queue.forEach(function (encounter) {
-      //   searchDocumentReference(patient, encounter);
-      // });
     }
 
     function searchDocumentReference(patient, encounter) {
