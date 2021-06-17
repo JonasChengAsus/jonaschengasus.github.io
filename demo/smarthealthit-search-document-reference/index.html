@@ -49,8 +49,8 @@
         <th>Name</th>
         <th>Gender</th>
         <th>DOB</th>
-        <!-- <th>Encounter ID</th>
-          <th>Type</th> -->
+        <th>Encounter ID</th>
+        <th>Type</th>
         <th>DocumentReference ID</th>
       </tr>
 
@@ -107,8 +107,8 @@
       console.log('encounter id:' + encounter.resource.id);
 
       var query = new URLSearchParams();
-      query.set("subject", patient.resource.id);
-      // query.set("encounter", encounter.resource.id);
+      // query.set("subject", patient.resource.id);
+      query.set("encounter", encounter.resource.id);
       // search all document reference
       myApp.smart.request(
         "DocumentReference?" + query, {
@@ -133,7 +133,6 @@
             bundle.entry.forEach(function (dr) {
               localCounts += 1;
 
-              // encounter information
               console.log(dr);
               console.log(dr.resource.id);
               $("#document-reference-id-table").append("<tr> \
@@ -141,6 +140,8 @@
               <td><div class='patient-name'>" + fname + ' ' + lname + "</div></td> \
               <td><div class='patient-gender'>" + gender + "</div></td> \
               <td><div class='patient-dob'>" + birthdate + "</div></td> \
+              <td><div class='encounter-id'>" + encounter.resource.id + "</div></td> \
+              <td><div class='encounter-type'>" + encounter.resource.type + "</div></td> \
               <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
               </tr>");
             });
@@ -173,8 +174,8 @@
             patientCounts += 1;
             $('#patient-counters').html(patientCounts);
 
-            // searchEncounter(patient);
-            searchDocumentReference(patient, patient);
+            searchEncounter(patient);
+            // searchDocumentReference(patient, patient);
           });
         },
       });
