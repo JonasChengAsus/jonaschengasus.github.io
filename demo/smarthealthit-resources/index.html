@@ -138,6 +138,7 @@
     var procedureCounts = 0;
     var encounterCounts = 0;
     var drCounts = 0;
+    var fhirRelease = 3;
 
     FHIR.oauth2.ready()
       .then(function (client) {
@@ -149,7 +150,11 @@
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
-      query.set("subject", patient.resource.id);
+      if (fhirRelease === 2) {
+        query.set("patient", patient.resource.id);
+      } else {
+        query.set("subject", patient.resource.id);
+      }
       // search all conditions
       await myApp.smart.request(
         "Condition?" + query, {
@@ -177,7 +182,11 @@
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
-      query.set("subject", patient.resource.id);
+      if (fhirRelease === 2) {
+        query.set("patient", patient.resource.id);
+      } else {
+        query.set("subject", patient.resource.id);
+      }
       // search all procedures
       await myApp.smart.request(
         "Procedure?" + query, {
@@ -205,7 +214,11 @@
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
-      query.set("subject", patient.resource.id);
+      if (fhirRelease === 2) {
+        query.set("patient", patient.resource.id);
+      } else {
+        query.set("subject", patient.resource.id);
+      }
       // search all encounters
       await myApp.smart.request(
         "Encounter?" + query, {
@@ -233,7 +246,11 @@
       console.log(patient.resource.id);
 
       var query = new URLSearchParams();
-      query.set("subject", patient.resource.id);
+      if (fhirRelease === 2) {
+        query.set("patient", patient.resource.id);
+      } else {
+        query.set("subject", patient.resource.id);
+      }
       // search all document reference
       await myApp.smart.request(
         "DocumentReference?" + query, {
@@ -259,7 +276,7 @@
 
     async function searchPatient() {
       // fhir information
-      var fhirRelease = await myApp.smart.getFhirRelease();
+      fhirRelease = await myApp.smart.getFhirRelease();
       $('#fhir-release').html(fhirRelease);
 
       var query = new URLSearchParams();
