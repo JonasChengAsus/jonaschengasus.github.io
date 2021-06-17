@@ -75,6 +75,22 @@
       </tr>
     </table>
 
+    <h2>User Information</h2>
+    <table>
+      <tr>
+        <th>First Name:</th>
+        <td id='user-fname'>no available</td>
+      </tr>
+      <tr>
+        <th>Last Name:</th>
+        <td id='user-lname'>no available</td>
+      </tr>
+      <tr>
+        <th>Gender:</th>
+        <td id='user-gender'>no available</td>
+      </tr>
+    </table>
+
     <h2>Resource ID</h2>
     <table>
       <tr>
@@ -153,6 +169,10 @@
 
     async function doRequests() {
 
+      // obtains user information
+      var user = await myApp.smart.user.read();
+      console.log(user);
+
       // obtains patient information
       var patient = await myApp.smart.patient.read();
       console.log(patient);
@@ -188,12 +208,25 @@
       $('#patient-id').html(patientId);
       $('#encounter-id').html(encounterId);
 
+      // user information
+      var userGender = user.gender;
+      var userFname = '';
+      var userLname = '';
+      if (typeof user.name[0] !== undefined) {
+        userFname = user.name[0].given.join(' ');
+        userLname = user.name[0].family;
+      }
+
+      $('#user-fname').html(userFname);
+      $('#user-lname').html(userLname);
+      $('#user-gender').html(userGender);
+
       // patient information
       var gender = patient.gender;
       var birthdate = patient.birthDate;
       var fname = '';
       var lname = '';
-      if (typeof patient.name[0] !== 'undefined') {
+      if (typeof patient.name[0] !== undefined) {
         fname = patient.name[0].given.join(' ');
         lname = patient.name[0].family;
       }
