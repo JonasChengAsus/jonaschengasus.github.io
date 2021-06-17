@@ -50,8 +50,10 @@
         <th>Gender</th>
         <th>DOB</th>
         <th>Encounter ID</th>
-        <th>Type</th>
+        <th>Class</th>
         <th>DocumentReference ID</th>
+        <th>Content Type</th>
+        <th>Content Uri</th>
       </tr>
 
       <tbody id="document-reference-id-table"></tbody>
@@ -138,9 +140,13 @@
               console.log(encounter);
               console.log(dr);
 
-              // document reference context information
-              if (dr.context !== undefined) {
-                console.log(dr.context);
+              // document reference content
+              var contentType = "not available";
+              var url = "not available";
+              if (dr.content !== undefined && dr.content[0] !== undefined && dr.content[0].attachment) {
+                console.log(dr.content);
+                contentType = dr.content[0].attachment.contentType;
+                url = myApp.smart.state.serverUrl + dr.dr.content[0].attachment.url;
               }
 
               $("#document-reference-id-table").append("<tr> \
@@ -149,8 +155,10 @@
               <td><div class='patient-gender'>" + gender + "</div></td> \
               <td><div class='patient-dob'>" + birthdate + "</div></td> \
               <td><div class='encounter-id'>" + encounter.resource.id + "</div></td> \
-              <td><div class='encounter-type'>" + encounter.resource.type + "</div></td> \
+              <td><div class='encounter-type'>" + encounter.resource.class + "</div></td> \
               <td><div class='document-reference-id'>" + dr.resource.id + "</div></td> \
+              <td><div class='document-reference-content-type'>" + contentType + "</div></td> \
+              <td><div class='document-reference-content-url'>" + url + "</div></td> \
               </tr>");
             });
 
